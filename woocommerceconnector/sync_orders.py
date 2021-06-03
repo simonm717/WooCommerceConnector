@@ -500,7 +500,7 @@ def get_item_code(woocommerce_item):
         # variation
         item_code = frappe.db.get_value(
             "Item",
-            {"woocommerce_product_id": woocommerce_item.get("variation_id")},
+            {"woocommerce_variant_id": woocommerce_item.get("variation_id")},
             "item_code",
         )
     else:
@@ -510,7 +510,7 @@ def get_item_code(woocommerce_item):
             {"woocommerce_product_id": woocommerce_item.get("product_id")},
             "item_code",
         )
-
+    #make_woocommerce_log(title="Test",status="Error", method="sync_woocommerce_items", message=item_code, request_data=woocommerce_item, exception=True)
     return item_code
 
 
