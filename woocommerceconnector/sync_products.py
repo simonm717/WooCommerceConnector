@@ -35,6 +35,7 @@ def sync_woocommerce_items(warehouse, woocommerce_item_list):
     for woocommerce_item in get_woocommerce_items():
         try:
             make_item(warehouse, woocommerce_item, woocommerce_item_list)
+            #make_woocommerce_log(title="Test",status="Test", method="sync_woocommerce_items", message=woocommerce_item_list, request_data=woocommerce_item, exception=True)
         except woocommerceError as e:
             make_woocommerce_log(
                 title="{0}".format(e),
@@ -1029,26 +1030,22 @@ def update_item_stock(item_code, woocommerce_settings, bin=None):
                     qty += _bin.actual_qty
 
                 # bugfix #1582: variant control from WooCommerce, not ERPNext
-                # if item.woocommerce_variant_id and int(item.woocommerce_variant_id) > 0:
-                # item_data, resource = get_product_update_dict_and_resource(item.woocommerce_product_id, item.woocommerce_variant_id, is_variant=True, actual_qty=qty)
-                # else:
-                # item_data, resource = get_product_update_dict_and_resource(item.woocommerce_product_id, item.woocommerce_variant_id, actual_qty=qty)
-                if item.woocommerce_product_id and item.variant_of:
+                if item.woocommerce_product_id and item.woocommerce_variant_id:
                     # item = variant
-                    template_item = frappe.get_doc(
-                        "Item", item.variant_of
-                    ).woocommerce_product_id
                     item_data, resource = get_product_update_dict_and_resource(
-                        template_item,
-                        woocommerce_variant_id=item.woocommerce_product_id,
-                        is_variant=True,
-                        actual_qty=qty,
+                            woocommerce_product_id=item.woocommerce_product_id,
+                            woocommerce_variant_id=item.woocommerce_variant_id,
+                            is_variant=True,
+                            actual_qty=qty,
                     )
+
+                    make_woocommerce_log(title="Update stock of {0}".format(item.item_code), status="Success", method="update_item_stock", message="Resource: woocommerce_product_id: {0}, woocommerce_variant_id: {1} and qty: {2}".format(item.woocommerce_product_id, item.woocommerce_variant_id, qty))
                 else:
                     # item = single
                     item_data, resource = get_product_update_dict_and_resource(
                         item.woocommerce_product_id, actual_qty=qty
                     )
+                    make_woocommerce_log(title="Update stock of {0}".format(item.item_code), status="Success", method="update_item_stock", message="Resource: woocommerce_product_id: {0} and qty: {1}".format(item.woocommerce_product_id, qty))
                 try:
                     # make_woocommerce_log(title="Update stock of {0}".format(item.barcode), status="Started", method="update_item_stock", message="Resource: {0}, data: {1}".format(resource, item_data))
                     put_request(resource, item_data)
@@ -1093,6 +1090,7 @@ def add_w_id_to_erp():
 
     # loop through all items on WooCommerce and get their IDs (matched by barcode)
     woo_items = get_woocommerce_items()
+    #make_woocommerce_log(title="Test",status="Error", method="sync_woocommerce_items", message='', request_data=woo_items, exception=True)
     make_woocommerce_log(
         title="Syncing IDs",
         status="Started",
@@ -1101,6 +1099,7 @@ def add_w_id_to_erp():
         request_data={},
         exception=True,
     )
+    print(woo_items)
     for woocommerce_item in woo_items:
         update_item = """UPDATE `tabItem`
             SET `woocommerce_product_id` = '{0}'
