@@ -340,7 +340,7 @@ def create_sales_order(woocommerce_order, woocommerce_settings, company=None):
 
         # alle orders in ERP = submitted
         so.save(ignore_permissions=True)
-        so.submit()
+        #so.submit()
 
     else:
         so = frappe.get_doc("Sales Order", so)
@@ -423,7 +423,7 @@ def create_sales_invoice(woocommerce_order, woocommerce_settings, so):
         )
         si.flags.ignore_mandatory = True
         set_cost_center(si.items, woocommerce_settings.cost_center)
-        si.submit()
+        #si.submit()
         if woocommerce_settings.import_payment == "1":
             make_payament_entry_against_sales_invoice(si, woocommerce_settings)
         frappe.db.commit()
@@ -443,7 +443,7 @@ def make_payament_entry_against_sales_invoice(doc, woocommerce_settings):
     payemnt_entry.flags.ignore_mandatory = True
     payemnt_entry.reference_no = doc.name
     payemnt_entry.reference_date = nowdate()
-    payemnt_entry.submit()
+    #payemnt_entry.submit()
 
 
 def create_delivery_note(woocommerce_order, woocommerce_settings, so):
