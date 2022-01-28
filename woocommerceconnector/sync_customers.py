@@ -78,7 +78,7 @@ def create_customer_address(customer, woocommerce_customer):
     if billing_address:
         country = get_country_name(billing_address.get("country"))
         if not frappe.db.exists("Country", country):
-            country = "Switzerland"
+            country = "Germany"
         try :
             frappe.get_doc({
                 "doctype": "Address",
@@ -91,8 +91,8 @@ def create_customer_address(customer, woocommerce_customer):
                 "state": billing_address.get("state"),
                 "pincode": billing_address.get("postcode"),
                 "country": country,
-                "phone": billing_address.get("phone"),
-                "email_id": billing_address.get("email"),
+                #"phone": billing_address.get("phone"),
+                #"email_id": billing_address.get("email"),
                 "links": [{
                     "link_doctype": "Customer",
                     "link_name": customer.name
@@ -106,7 +106,7 @@ def create_customer_address(customer, woocommerce_customer):
     if shipping_address:
         country = get_country_name(shipping_address.get("country"))
         if not frappe.db.exists("Country", country):
-            country = "Switzerland"
+            country = "Germany"
         try :
             frappe.get_doc({
                 "doctype": "Address",
