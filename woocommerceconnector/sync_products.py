@@ -191,6 +191,8 @@ def get_item_code(woocommerce_item, woocommerce_settings):
         item_code = str(woocommerce_item.get("name"))
     elif woocommerce_settings.item_code_based_on == "Random Hash":
         item_code = frappe.generate_hash(length=10)
+    elif woocommerce_settings.item_code_based_on == "SKU":
+        item_code = str(woocommerce_item.get("sku"))
     elif woocommerce_settings.item_code_based_on == "Naming Series":
         item_code = None
 
