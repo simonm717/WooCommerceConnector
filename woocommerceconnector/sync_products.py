@@ -259,7 +259,9 @@ def create_item_variants(
             woocommerce_item_variant = {
                 "id": variant.get("id"),
                 "woocommerce_variant_id": variant.get("id"),
-                "name": woocommerce_item.get("name"),
+                "name": variant.get("mini_desc"),
+                "woocommerce_description": variant.get("description"),
+                "description": variant.get("description"),
                 "item_code": str(
                     variant.get("id")
                 ),  # + " " + woocommerce_item.get("name"),
