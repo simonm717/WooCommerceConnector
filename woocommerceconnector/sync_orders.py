@@ -486,8 +486,8 @@ def get_order_items(order_items, woocommerce_settings):
         items.append(
             {
                 "item_code": item_code,
-                "laenge": woocommerce_item.get("L\u00e4nge (mm)"),
-                "breite": woocommerce_item.get("Breite (mm)"),
+                "laenge": woocommerce_item.get("length"),
+                "breite": woocommerce_item.get("width"),
                 "profilanzahl": woocommerce_item.get("quantity"),
                 "farbe": woocommerce_item.get("Farbe"),
                 "rate": woocommerce_item.get("price"),
